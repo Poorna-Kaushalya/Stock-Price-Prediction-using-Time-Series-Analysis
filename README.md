@@ -147,9 +147,30 @@ streamlit run app.py
 </div>
 
 * User Interface
+  
+<div align="center">
+
+<table>
+  <tr>
+    <td align="center">
+      <strong>User Interface</strong><br>
+      <img src="images/ui.png" width="400">
+    </td>
+    <td align="center">
+      <strong>PDF Format</strong><br>
+      <img src="images/pdf.png" width="400">
+    </td>
+  </tr>
+</table>
+
+</div>
+
+---
 
 <div align="center">
-  <img src="images/ui.png" width="400">
+  
+#### 👁 Streamlit Web App [Apple Stock Predictor](https://stock-price-prediction-using-time-series-analysis-h7jwzpzuuaff.streamlit.app/)
+
 </div>
 
 ---
