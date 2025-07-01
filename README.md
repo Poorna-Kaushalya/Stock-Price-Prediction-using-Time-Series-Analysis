@@ -169,7 +169,7 @@ streamlit run app.py
 
 <div align="center">
   
-#### 👁 Streamlit Web App [Apple Stock Predictor](https://stock-price-prediction-using-time-series-analysis-h7jwzpzuuaff.streamlit.app/)
+#### 👁 Streamlit Web App [Apple Stock Predictor](https://stock-price-prediction-using-time-series-analysis-dwve35gtszyf.streamlit.app/)
 
 </div>
 
