@@ -41,7 +41,7 @@ if st.button("🔮 Predict Closing Price"):
     st.markdown(f"""
     <div style="display: flex; justify-content: center; align-items: stretch; padding: 20px; background-color: #e6f4ea; border-radius: 10px; color: #1a1a1a; font-family: 'Segoe UI', sans-serif;">
         <div style="flex: 1; padding-right: 20px;">
-            <h4>📊 Input Summary:</h4>
+            <h4 style="color: black;">📊 Input Summary:</h4>
             <ul style="list-style-type: none; padding-left: 0;">
                 <li>Yesterday Opening Price:<strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${Open_p:.2f}</strong></li>
                 <li>Yesterday Closing Price:<strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${close_lag1:.2f}</strong></li>
