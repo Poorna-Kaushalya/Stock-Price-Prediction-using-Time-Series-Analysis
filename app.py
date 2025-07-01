@@ -159,7 +159,7 @@ if st.button("🔮 Predict Closing Price"):
     pdf.ln(10)
 
     # Output PDF bytes
-    pdf_bytes = bytes(pdf.output(dest='S'))
+    pdf_bytes = pdf.output(dest='S').encode('latin1')
 
     st.download_button(
         label="📄 Download Prediction Report (PDF)",
