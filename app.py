@@ -7,6 +7,7 @@ from fpdf import FPDF
 import tempfile
 import os
 
+
 st.set_page_config(page_title="Apple Stock Predictor", page_icon="📈", layout="centered")
 
 model = joblib.load('linear_regression_model.pkl')
@@ -158,7 +159,7 @@ if st.button("🔮 Predict Closing Price"):
     pdf.ln(10)
 
     # Output PDF bytes
-    pdf_bytes = pdf.output(dest='S').encode('latin1')
+    pdf_bytes = bytes(pdf.output(dest='S'))
 
     st.download_button(
         label="📄 Download Prediction Report (PDF)",
