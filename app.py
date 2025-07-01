@@ -15,7 +15,7 @@ st.markdown("<h1 style='text-align: center;'>Interactive Apple Stock Predictor</
 st.markdown("---")
 
 st.markdown("""
-<p style="text-align: justify; padding-top: px;">
+<p style="text-align: justify;">
 This web application is built to assist users in predicting Apple Inc. (AAPL) stock closing prices using machine learning models. It combines simplicity with powerful analytics, allowing investors, traders, and data science enthusiasts to explore stock trends and make informed decisions. Powered by historical data and models like Linear Regression and LSTM, this tool offers a user-friendly way to understand and anticipate market movements.
 </p>
 """, unsafe_allow_html=True)
@@ -37,7 +37,6 @@ if st.button("🔮 Predict Closing Price"):
     direction = "📈 Market Expected to Rise" if prediction > close_lag1 else "📉 Market Expected to Fall"
     color = "#34a853" if prediction > close_lag1 else "#ea4335"
 
-    # Display prediction on web page
     st.markdown(f"""
     <div style="display: flex; justify-content: center; align-items: stretch; padding: 20px; background-color: #e6f4ea; border-radius: 10px; color: #1a1a1a; font-family: 'Segoe UI', sans-serif;">
         <div style="flex: 1; padding-right: 20px;">
@@ -57,13 +56,9 @@ if st.button("🔮 Predict Closing Price"):
 """, unsafe_allow_html=True)
     st.markdown("---")
 
-    # --- Create PDF with styles ---
+    # --- PDF Class ---
     class PDF(FPDF):
         def header(self):
-            # Register fonts once here or before creating PDF
-            self.add_font('DejaVu', '', 'DejaVuSans.ttf', uni=True)
-            self.add_font('DejaVu', 'B', 'DejaVuSans.ttf', uni=True)
-
             self.set_font('DejaVu', 'B', 18)
             self.set_text_color(30, 30, 150)
             self.cell(0, 15, 'Apple Stock Prediction Report', 0, 1, 'C')
@@ -79,26 +74,27 @@ if st.button("🔮 Predict Closing Price"):
             self.cell(0, 10, '🚀 Built with ❤️ using Streamlit | Model: Linear Regression | Data: Yahoo Finance', 0, 0, 'C')
 
     pdf = PDF()
-    pdf.add_page()
 
-    pdf.add_font('DejaVu', '', 'DejaVuSans.ttf', uni=True)
+    # Register Unicode font (only once)
+    font_path = os.path.join(os.path.dirname(__file__), "DejaVuSans.ttf")
+    pdf.add_font('DejaVu', '', font_path, uni=True)
+    pdf.add_font('DejaVu', 'B', font_path, uni=True)
     pdf.set_font('DejaVu', '', 12)
 
-    # Description paragraph
+    # Intro
     desc = ("This report provides a prediction for Apple Inc. (AAPL) stock closing prices "
             "based on historical data and machine learning models. Use this information "
             "to make informed decisions on stock trading and investment.")
+    pdf.add_page()
     pdf.multi_cell(0, 10, desc)
     pdf.ln(5)
 
-    # Input summary title
+    # Input summary
     pdf.set_font("DejaVu", 'B', 14)
     pdf.set_text_color(0, 0, 0)
     pdf.cell(0, 10, 'Input Summary:', ln=True)
     pdf.set_font("DejaVu", '', 12)
     pdf.ln(2)
-
-    # Input values
     inputs = [
         f"Yesterday Opening Price: ${Open_p:.2f}",
         f"Yesterday Closing Price: ${close_lag1:.2f}",
@@ -109,71 +105,61 @@ if st.button("🔮 Predict Closing Price"):
         pdf.cell(0, 8, line, ln=True)
     pdf.ln(10)
 
-    # Add 30-day closing price plot
-    stock_data = yf.download("AAPL", period="30d", interval="1d", auto_adjust=True)[['Close']]
-    fig, ax = plt.subplots(figsize=(6, 3))
-    ax.plot(stock_data.index, stock_data['Close'], marker='o', linestyle='-')
-    ax.set_title("AAPL Closing Prices (Last 30 Days)", fontsize=12)
-    ax.set_xlabel("Date")
-    ax.set_ylabel("Closing Price (USD)")
-    ax.grid(True)
-    plt.tight_layout()
+    # 30-day closing price plot
+    try:
+        stock_data = yf.download("AAPL", period="30d", interval="1d", auto_adjust=True)[['Close']]
+        fig, ax = plt.subplots(figsize=(6, 3))
+        ax.plot(stock_data.index, stock_data['Close'], marker='o', linestyle='-')
+        ax.set_title("AAPL Closing Prices (Last 30 Days)", fontsize=12)
+        ax.set_xlabel("Date")
+        ax.set_ylabel("Closing Price (USD)")
+        ax.grid(True)
+        plt.tight_layout()
 
-    with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmpfile:
-        fig.savefig(tmpfile.name, dpi=150)
-        plt.close(fig)
+        with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmpfile:
+            fig.savefig(tmpfile.name, dpi=150)
+            plt.close(fig)
+            pdf.image(tmpfile.name, x=30, w=150)
+            os.unlink(tmpfile.name)
 
-        pdf.image(tmpfile.name, x=30, w=150)
-        pdf.ln(10)
+    except Exception as e:
+        pdf.set_text_color(200, 0, 0)
+        pdf.cell(0, 10, f"Failed to load chart: {str(e)}", ln=True)
+    pdf.ln(10)
 
-    # Prediction result with styled box and colors centered horizontally
+    # Prediction result box
     if prediction > close_lag1:
-        bg_color = (220, 255, 220)  # Light green background
-        text_color = (52, 168, 83)  # Dark green text
+        bg_color = (220, 255, 220)
+        text_color = (52, 168, 83)
     else:
-        bg_color = (255, 220, 220)  # Light red background
-        text_color = (234, 67, 53)  # Dark red text
+        bg_color = (255, 220, 220)
+        text_color = (234, 67, 53)
 
     pdf.set_fill_color(*bg_color)
     pdf.set_text_color(*text_color)
     pdf.set_draw_color(*text_color)
     pdf.set_line_width(0.8)
 
-    pdf.set_font("DejaVu", 'B', 16)
     pred_text = f"Predicted Closing Price: ${prediction:.2f}"
-    pred_text_width = pdf.get_string_width(pred_text) + 20  # padding
-
-    pdf.set_font("DejaVu", '', 14)
     dir_text = f"Market Direction: {direction.replace('📈 ', '').replace('📉 ', '')}"
+
+    pdf.set_font("DejaVu", 'B', 16)
+    pred_text_width = pdf.get_string_width(pred_text) + 20
     dir_text_width = pdf.get_string_width(dir_text) + 20
-
     box_width = max(pred_text_width, dir_text_width)
-    box_height = 25  # approximate height for two lines
-
-    # Calculate centered X position based on page width (210mm for A4)
-    page_width = pdf.w
-    x_start = (page_width - box_width) / 2
-
+    box_height = 25
+    x_start = (pdf.w - box_width) / 2
     y_start = pdf.get_y()
 
-    # Draw filled rectangle with border
     pdf.rect(x_start, y_start - 3, box_width, box_height, style='FD')
-
-    # Print texts centered inside the box
     pdf.set_xy(x_start, y_start)
-    pdf.set_font("DejaVu", 'B', 16)
     pdf.cell(box_width, 12, pred_text, ln=2, align='C')
-
     pdf.set_font("DejaVu", '', 14)
     pdf.cell(box_width, 12, dir_text, ln=1, align='C')
-
-    pdf.set_text_color(0, 0, 0)  # Reset color to black
+    pdf.set_text_color(0, 0, 0)
     pdf.ln(10)
 
-
-    os.unlink(tmpfile.name)
-
-    # Output PDF bytes (no encode needed for fpdf2)
+    # Output PDF bytes
     pdf_bytes = bytes(pdf.output(dest='S'))
 
     st.download_button(
@@ -188,17 +174,19 @@ st.subheader("📉 Apple Stock - Last 30 Days Trend")
 
 @st.cache_data
 def fetch_data():
-    df = yf.download("AAPL", period="30d", interval="1d", auto_adjust=True)
-    return df[['Close']]
+    return yf.download("AAPL", period="30d", interval="1d", auto_adjust=True)[['Close']]
 
-stock_data = fetch_data()
-fig, ax = plt.subplots(figsize=(10, 4))
-ax.plot(stock_data.index, stock_data['Close'], marker='o', linestyle='-')
-ax.set_title("AAPL Closing Prices (Last 30 Days)", fontsize=14)
-ax.set_xlabel("Date")
-ax.set_ylabel("Closing Price (USD)")
-ax.grid(True)
-st.pyplot(fig)
+try:
+    stock_data = fetch_data()
+    fig, ax = plt.subplots(figsize=(10, 4))
+    ax.plot(stock_data.index, stock_data['Close'], marker='o', linestyle='-')
+    ax.set_title("AAPL Closing Prices (Last 30 Days)", fontsize=14)
+    ax.set_xlabel("Date")
+    ax.set_ylabel("Closing Price (USD)")
+    ax.grid(True)
+    st.pyplot(fig)
+except Exception as e:
+    st.error(f"Failed to fetch AAPL data: {e}")
 
 st.markdown("""<hr style='margin-top:40px;'>""", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center;'>🚀 Built with ❤️ using Streamlit | Model: Linear Regression | Data: Yahoo Finance</p>", unsafe_allow_html=True)
