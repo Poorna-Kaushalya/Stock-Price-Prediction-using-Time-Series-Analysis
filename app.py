@@ -59,7 +59,7 @@ if st.button("🔮 Predict Closing Price"):
     # --- PDF Class ---
     class PDF(FPDF):
         def header(self):
-            self.set_font('DejaVu', 'B', 18)
+            self.set_font('Helvetica', 'B', 18)
             self.set_text_color(30, 30, 150)
             self.cell(0, 15, 'Apple Stock Prediction Report', 0, 1, 'C')
             self.set_draw_color(50, 50, 50)
@@ -69,17 +69,13 @@ if st.button("🔮 Predict Closing Price"):
 
         def footer(self):
             self.set_y(-20)
-            self.set_font('DejaVu', '', 10)
+            self.set_font('Helvetica', '', 10)
             self.set_text_color(100, 100, 100)
-            self.cell(0, 10, '🚀 Built with ❤️ using Streamlit | Model: Linear Regression | Data: Yahoo Finance', 0, 0, 'C')
+            # Removed emojis here for compatibility
+            self.cell(0, 10, 'Built with Streamlit | Model: Linear Regression | Data: Yahoo Finance', 0, 0, 'C')
 
     pdf = PDF()
-
-    # Register Unicode font (only once)
-    font_path = os.path.join(os.path.dirname(__file__), "DejaVuSans.ttf")
-    pdf.add_font('DejaVu', '', font_path, uni=True)
-    pdf.add_font('DejaVu', 'B', font_path, uni=True)
-    pdf.set_font('DejaVu', '', 12)
+    pdf.set_font('Helvetica', '', 12)
 
     # Intro
     desc = ("This report provides a prediction for Apple Inc. (AAPL) stock closing prices "
@@ -90,10 +86,10 @@ if st.button("🔮 Predict Closing Price"):
     pdf.ln(5)
 
     # Input summary
-    pdf.set_font("DejaVu", 'B', 14)
+    pdf.set_font("Helvetica", 'B', 14)
     pdf.set_text_color(0, 0, 0)
     pdf.cell(0, 10, 'Input Summary:', ln=True)
-    pdf.set_font("DejaVu", '', 12)
+    pdf.set_font("Helvetica", '', 12)
     pdf.ln(2)
     inputs = [
         f"Yesterday Opening Price: ${Open_p:.2f}",
@@ -116,11 +112,13 @@ if st.button("🔮 Predict Closing Price"):
         ax.grid(True)
         plt.tight_layout()
 
-        with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmpfile:
-            fig.savefig(tmpfile.name, dpi=150)
-            plt.close(fig)
-            pdf.image(tmpfile.name, x=30, w=150)
-            os.unlink(tmpfile.name)
+        # Save to temp path, avoiding Windows file locking issues
+        tmp_path = tempfile.mktemp(suffix=".png")
+        fig.savefig(tmp_path, dpi=150)
+        plt.close(fig)
+
+        pdf.image(tmp_path, x=30, w=150)
+        os.unlink(tmp_path)
 
     except Exception as e:
         pdf.set_text_color(200, 0, 0)
@@ -143,7 +141,7 @@ if st.button("🔮 Predict Closing Price"):
     pred_text = f"Predicted Closing Price: ${prediction:.2f}"
     dir_text = f"Market Direction: {direction.replace('📈 ', '').replace('📉 ', '')}"
 
-    pdf.set_font("DejaVu", 'B', 16)
+    pdf.set_font("Helvetica", 'B', 16)
     pred_text_width = pdf.get_string_width(pred_text) + 20
     dir_text_width = pdf.get_string_width(dir_text) + 20
     box_width = max(pred_text_width, dir_text_width)
@@ -154,7 +152,7 @@ if st.button("🔮 Predict Closing Price"):
     pdf.rect(x_start, y_start - 3, box_width, box_height, style='FD')
     pdf.set_xy(x_start, y_start)
     pdf.cell(box_width, 12, pred_text, ln=2, align='C')
-    pdf.set_font("DejaVu", '', 14)
+    pdf.set_font("Helvetica", '', 14)
     pdf.cell(box_width, 12, dir_text, ln=1, align='C')
     pdf.set_text_color(0, 0, 0)
     pdf.ln(10)
@@ -189,4 +187,4 @@ except Exception as e:
     st.error(f"Failed to fetch AAPL data: {e}")
 
 st.markdown("""<hr style='margin-top:40px;'>""", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center;'>🚀 Built with ❤️ using Streamlit | Model: Linear Regression | Data: Yahoo Finance</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center;'>Built with Streamlit | Model: Linear Regression | Data: Yahoo Finance</p>", unsafe_allow_html=True)
