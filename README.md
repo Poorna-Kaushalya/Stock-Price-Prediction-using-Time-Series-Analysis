@@ -175,17 +175,87 @@ streamlit run app.py
 
 ---
 
-## Built With
+## 🛠️ Built With
 
-* [Python 3.8+](https://www.python.org/)
-* [yfinance](https://pypi.org/project/yfinance/)
-* [pandas](https://pandas.pydata.org/)
-* [numpy](https://numpy.org/)
-* [matplotlib](https://matplotlib.org/)
-* [scikit-learn](https://scikit-learn.org/)
-* [PyTorch](https://pytorch.org/)
-* [Streamlit](https://streamlit.io/)
-* [fpdf2](https://pypi.org/project/fpdf2/)
+<div align="center">
+
+<table>
+  <thead>
+    <tr>
+      <th style="width: 400px; text-align: center; padding-right: 20px;">Technology</th>
+      <th style="text-align: center;">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center;">
+        <img src="https://img.icons8.com/color/24/000000/python--v1.png" alt="Python" style="vertical-align: middle;"/> 
+        <a href="https://www.python.org/">Python 3.8+</a>
+      </td>
+      <td style="text-align: center;">Programming language</td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">
+        <img src="https://img.icons8.com/ios-filled/24/000000/money.png" alt="yfinance" style="vertical-align: middle;"/> 
+        <a href="https://pypi.org/project/yfinance/">yfinance</a>
+      </td>
+      <td style="text-align: center;">Yahoo Finance API wrapper</td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">
+        <img src="https://img.icons8.com/color/24/000000/pandas.png" alt="pandas" style="vertical-align: middle;"/> 
+        <a href="https://pandas.pydata.org/">pandas</a>
+      </td>
+      <td style="text-align: center;">Data manipulation</td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">
+        <img src="https://img.icons8.com/color/24/000000/numpy.png" alt="numpy" style="vertical-align: middle;"/> 
+        <a href="https://numpy.org/">numpy</a>
+      </td>
+      <td style="text-align: center;">Numerical computing</td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">
+        <img src="https://img.icons8.com/color/24/000000/graph.png" alt="matplotlib" style="vertical-align: middle;"/> 
+        <a href="https://matplotlib.org/">matplotlib</a>
+      </td>
+      <td style="text-align: center;">Data visualization</td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">
+        <img src="https://img.icons8.com/color/24/000000/artificial-intelligence.png" alt="scikit-learn" style="vertical-align: middle;"/> 
+        <a href="https://scikit-learn.org/">scikit-learn</a>
+      </td>
+      <td style="text-align: center;">Machine learning library</td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/96/Pytorch_logo.png" alt="PyTorch" width="24" height="24" style="vertical-align: middle;"/> 
+        <a href="https://pytorch.org/">PyTorch</a>
+      </td>
+      <td style="text-align: center;">Deep learning framework</td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">
+        <img src="https://img.icons8.com/color/24/000000/streamlit.png" alt="Streamlit" style="vertical-align: middle;"/> 
+        <a href="https://streamlit.io/">Streamlit</a>
+      </td>
+      <td style="text-align: center;">Web app framework</td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">
+        <img src="https://img.icons8.com/ios-filled/24/000000/pdf.png" alt="fpdf2" style="vertical-align: middle;"/> 
+        <a href="https://pypi.org/project/fpdf2/">fpdf2</a>
+      </td>
+      <td style="text-align: center;">PDF generation</td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+
+
 
 ---
 
